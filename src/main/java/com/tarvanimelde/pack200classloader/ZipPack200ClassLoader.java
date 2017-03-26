@@ -20,6 +20,8 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 
 /**
  *
@@ -27,10 +29,22 @@ import java.nio.file.Path;
  */
 public class ZipPack200ClassLoader extends Pack200ClassLoader {
     
+    //public ZipPack200ClassLoader(ZipFile zippedPack200, ClassLoader parent) throws NoSuchFileException, IOException {
+     //   super();
+    //}
+    
     public ZipPack200ClassLoader(Path zippedPack200, ClassLoader parent) throws NoSuchFileException, IOException {
         super(Files.newInputStream(zippedPack200), parent);
     }
-    public ZipPack200ClassLoader(InputStream zippedPack200, ClassLoader parent) throws NoSuchFileException, IOException {
-        super(zippedPack200, parent);
+    public ZipPack200ClassLoader(ZipInputStream zippedPack200, ClassLoader parent) throws NoSuchFileException, IOException {
+        super(unzipStream(zippedPack200), parent);
+    }
+    
+    private static InputStream unzipStream(ZipInputStream zipStream) {
+        return null;
+    }
+    
+    private static InputStream test(Path t) throws IOException {
+        return Files.newInputStream(t);
     }
 }

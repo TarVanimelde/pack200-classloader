@@ -15,16 +15,38 @@
  */
 package com.tarvanimelde.pack200classloader;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.zip.GZIPInputStream;
+
 /**
  *
  * @author TarVanimelde
  */
 public class GZipPack200ClassLoader extends Pack200ClassLoader {
-    GZipPack200ClassLoader(Path gzipFile, ClassLoader parent) {
-        
+    GZipPack200ClassLoader(Path gzipFile, ClassLoader parent) throws IOException, NoSuchFileException {
+        super(decompressGZIPStream(new GZIPInputStream(Files.newInputStream(gzipFile))), parent);
     }
     
-    GZipPack200ClassLoader(InputStream gzipStream, ClassLoader parent) {
+    GZipPack200ClassLoader(GZIPInputStream gzipStream, ClassLoader parent) throws IOException, NoSuchFileException {
+        super(decompressGZIPStream(gzipStream), parent);
+    }
+    
+    private static InputStream decompressGZIPStream(GZIPInputStream gIn) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int len;
+        for (len = gIn.read(buffer, 0, buffer.length); len != -1; len = gIn.read(buffer, 0, buffer.length)) {
+            out.write(buffer, 0, len);
+        }
         
+        ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+        return in;
     }
 }
