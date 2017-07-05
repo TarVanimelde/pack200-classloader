@@ -2,6 +2,8 @@
 
 Convenience [class loaders](https://docs.oracle.com/javase/8/docs/api/java/lang/ClassLoader.html) that load classes from pack200-compressed jars. The overhead of scanning the files contained in the jar (e.g., virus scanners) is avoided by performing the necessary decompressions in-memory. Owing to the [design of pack200](http://docs.oracle.com/javase/8/docs/technotes/guides/pack200/pack-spec.html), random file access is not possible, so all the files contained in a pack200 archive are decompressed simultaneously in the constructor of the classloader. The bytes of the decompressed class files are held in memory.
 
+* License: Apache 2.0
+
 ## pack200
 
 To load the class files from a pack200 archive, provide a parent ```ClassLoader``` (usually the system class loader) and either a ```Path``` to the archive or an ```InputStream```:
